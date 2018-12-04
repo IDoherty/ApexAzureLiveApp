@@ -1,0 +1,50 @@
+cdab,00,Prototype,00,0,Team
+0737,03,Nickie Quaid,01,0,Limerick
+b34c,03,Seamus Hickey,02,0,Limerick
+6d83,03,Richie English,03,0,Limerick
+73e0,03,Sean Finn,04,0,Limerick
+d242,03,Diarmaid Byrnes,05,0,Limerick
+aa0a,03,Declan Hannon,06,0,Limerick
+bfe3,03,Dan Morrissey,07,0,Limerick
+1f34,03,Cian Lynch,08,0,Limerick
+490e,03,Seamus Flanagan,09,0,Limerick
+f9f3,03,Graeme Mulcahy,10,0,Limerick
+229f,03,Tom Morrissey,11,0,Limerick
+0f63,03,Pat Ryan,12,0,Limerick
+1f1f,03,Barry Nash,13,0,Limerick
+94a1,03,Gearoid Hegarty,14,0,Limerick
+6e08,03,Kyle Hayes,15,0,Limerick
+99d8,03,Barry Hennessy,16,0,Limerick
+edbb,03,Andrew La Touche Cosgrave,17,0,Limerick
+84a0,03,Oisin O Reilly,18,0,Limerick
+b920,03,Aaron Gillane,19,0,Limerick
+6555,03,Barry Murphy,20,0,Limerick
+1d99,03,Paddy O Loughlin,21,0,Limerick
+0485,03,Lorcan Lyons,22,0,Limerick
+e576,03,Willie O Meara,23,0,Limerick
+438c,03,David Reidy,24,0,Limerick
+b29a,03,Colin Ryan,25,0,Limerick
+8cd3,04,Mark Fanning,01,0,Wexford
+b007,04,Damien Reck,02,0,Wexford
+Cb4f,04,Liam Ryan,03,0,Wexford
+93af,04,Simon Donohue,04,0,Wexford
+5c59,04,Paudie Foley,05,0,Wexford
+8570,04,Matthew O Hanlon,06,0,Wexford
+4364,04,Diarmuid O Keefe,07,0,Wexford
+8357,04,Shaun Murphy,08,0,Wexford
+6f35,04,Kevin Foley,09,0,Wexford
+8809,04,Aidan Nolan,10,0,Wexford
+3273,04,Lee Chin,11,0,Wexford
+6dcd,04,Jack O Connor,12,0,Wexford
+9b79,04,David  Dunne,13,0,Wexford
+9ece,04,Paul Morris,14,0,Wexford
+9d9d,04,Liam Óg McGovern,15,0,Wexford
+53a0,04,Eanna Martin,16,0,Wexford
+f509,04,Eoin Moore,17,0,Wexford
+dd81,04,Conor Firman,18,0,Wexford
+d4b1,04,James Breen,19,0,Wexford
+94fd,04,Darren Byrne,20,0,Wexford
+36dd,04,Joe O connor,21,0,Wexford
+cb31,04,Seamus Casey,22,0,Wexford
+f8cd,04,Harry Kehoe,23,0,Wexford
+4019,04,Ian Byrne,24,0,Wexford

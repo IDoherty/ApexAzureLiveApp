@@ -1,0 +1,44 @@
+Configuration File Notes
+
+The Configuration File contains the following pieces of information;
+
+0	- Output Location 1 (Uncut Packets) 
+1	- Flag (true to activate)
+2	- Output Location 2 (Packets Specified by Device List only)
+3	- Flag (true to activate)
+
+4	- Session File to read info
+5	- Flag (true to activate)
+
+6	- Computer Running the Code's Local IP Address as assigned by Network DHCP
+7	- Beacon Address File Location
+8	- Flag (true to activate)
+
+9	- Device List File
+10 	- Flag (true to activate)
+
+11	- UDP Output Flag (true to activate - Keep Disabled at this time as Code has been commented out)
+
+nb. Each Flag pertains to the operation of the piece(s) of information above it. Set true to enable the relevant code, and false to disable them.
+
+Notes on individual pieces of information;
+
+ Output Location Example - Sets Write Pathway for the Packet Dump. Change 'Test Sessions' to reflect the desired file path, and 'Session - ' to reflect the desired session name.
+eg. SessionWrite -> Sessions/TestSessions/Session - 
+
+ Read In Session Name Example - Sets the file from which a session is read in. Use the Full Path and name of the desired file.
+eg. SessionName -> Sessions/Alumni Stadium - Cork - 17_11_18/Session- 2018-11-17 18-06-47
+
+ Local IP Address Example - Take from the device running the session's Network Profile
+eg. LocalAddr -> 192.168.187.131:0
+ Beacon Address File Example - Sets the desired NetworkInfo File for the session. File should contain the IP Addresses of each beacon in use, its Number and Name (for reference purposes)
+eg. ApexBeaconInfo -> Config/NetworkInfo/NetworkInfoKingspan.txt
+
+Device List Options - allows you to select the desired Apex Device list for filtering output packets.
+eg. DevList -> Config/DevList/testDevList.txt
+
+
+The Final CSV string should be in the following format;
+
+Sessions/TestSessions/Session - ,true,Sessions/TestSessions/CutSession - ,false,Sessions/Alumni Stadium - Cork - 17_11_18/Session- 2018-11-17 18-06-47,false,194.55.105.52:0,Config/NetworkInfo/NetworkInfoKingspan.txt,true,Config/DevList/FenwayCorkDevList.txt,true,false
+Output Location 1				,flag,Output Location 2 				 , flag,Session File to read from											  , flag, Local IP Address, Beacon Address File Location		   ,flag,Device List File					 ,flag,flag
