@@ -26,7 +26,7 @@ import (
 	structs "pkg/structPrototypes"
 )
 
-func azureUpload(outAzureChan <-chan structs.AzureChanStruct, devList string) {
+func azureUpload(outAzureChan <-chan structs.AzureChanStruct /*, devList string*/) {
 
 	var azureIn structs.AzureChanStruct
 	/*/ Unused Variables
@@ -40,13 +40,13 @@ func azureUpload(outAzureChan <-chan structs.AzureChanStruct, devList string) {
 
 	fmt.Printf("Start Fenway Project\n")
 
-	// Build Lookup Table for Devices
+	/*/ Build Lookup Table for Devices
+		devTable, numDevices := getApexCSV(devList)
 
-	devTable, numDevices := getApexCSV(devList)
-
-	fmt.Println()
-	fmt.Println("Total Devices Loaded In - ", numDevices)
-	fmt.Println(devTable)
+		fmt.Println()
+		fmt.Println("Total Devices Loaded In - ", numDevices)
+		fmt.Println(devTable)
+	 	//*/
 
 	/*/ Azure Connection Prototype - used in sendAzurePacket
 	connStr := "Endpoint=sb://fenwaybus.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=njO049+bG5AY6QhmXIwu+mU6InX8dybImistGVobcR0="
@@ -96,7 +96,7 @@ func azureUpload(outAzureChan <-chan structs.AzureChanStruct, devList string) {
 			//*/
 
 			// Format Fragments
-			go azureFrags(numDevices, azureIn, devTable, fragChan)
+			go azureFrags( /*numDevices,*/ azureIn /*devTable,*/, fragChan)
 
 			/*/ AzureFrags Prototype Code
 				// Fill Output Fragment

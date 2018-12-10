@@ -52,7 +52,7 @@ func main() {
 
 	//*/  Output Packet Channel - Pass Validated Packets to File Writing Thread
 	outFileChan := make(chan string, 64)
-	outFileChan2 := make(chan string, 64)
+	//outFileChan2 := make(chan string, 64)
 	//*/
 
 	//*/  Metric Channel - Pass Validated Packet to Processing Thread
@@ -76,6 +76,9 @@ func main() {
 	if config.WriteOn == true {
 		go aggFuncs.WriteToFile(outFileChan, config.SessionWrite)
 	}
+	//*/
+
+	/*/
 	if config.Write2On == true {
 		go aggFuncs.WriteToFile(outFileChan2, config.SessionWrite2)
 	}
@@ -89,11 +92,11 @@ func main() {
 	//*/
 
 	//*/  Start Metric Processing Threads - Process Aggregated Packets and Output Metrics (Azure and UDP are options)
-	go metricFuncs.MetricFunc(metricChan /*, outUDPChan*/, outAzureChan, outFileChan2, config.Write2On, config.DevList)
+	go metricFuncs.MetricFunc(metricChan /*, outUDPChan*/, outAzureChan /*, outFileChan2, config.Write2On, config.DevList*/)
 	//*
 
 	//*/  Start Azure Output Threads - Send Packets up to Azure
-	go azureFuncs.AzureUpload(outAzureChan, config.DevList)
+	go azureFuncs.AzureUpload(outAzureChan /*, config.DevList*/)
 	//*/
 
 	//*/  Start UDP Connection Thread for each beacon connected to the system. Addresses taken from CSV file.

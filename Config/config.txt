@@ -1,1 +1,1 @@
-Sessions/TestSessions/Session - ,true,Sessions/TestSessions/CutSession - ,true,Sessions/Alumni Stadium - Cork - 17_11_18/Session- 2018-11-17 18-06-47,true,192.168.187.131:0,Config/NetworkInfo/NetworkInfoKingspan.txt,false,Config/DevList/FenwayCorkDevList.txt,true,false
+Sessions/TestSessions/Session - ,true,Sessions/TestSessions/CutSession - ,false,Sessions/Alumni Stadium - Cork - 17_11_18/Session- 2018-11-17 18-06-47,false,10.173.176.10:0,Config/NetworkInfo/NetworkInfoLieferingDemo.txt,true,Config/DevList/LieferingDevList.txt,true,false

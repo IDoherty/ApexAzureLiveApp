@@ -36,6 +36,11 @@ type ApexLookupTable struct {
 
 // Azure Fragment Identifiers Struct built from Input Struct and Values in the Lookup Table
 type AzureFragID struct {
+	DevID string
+}
+
+// Azure Fragment Identifiers Struct built from Input Struct and Values in the Lookup Table
+type AzureFragIDDevList struct {
 	DevID    string
 	TeamID   string `json:"tID"`
 	PlayerID string `json:"pID"`

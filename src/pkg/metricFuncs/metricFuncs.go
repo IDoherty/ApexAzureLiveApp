@@ -133,7 +133,7 @@ func truncate(some float32) float32 {
 	return float32(int(some*10) / 10)
 }
 
-func MetricFunc(metricChan <-chan string, outAzureChan chan<- structs.AzureChanStruct, outFileChan2 chan<- string, write2 bool, devInfo string) {
+func MetricFunc(metricChan <-chan string, outAzureChan chan<- structs.AzureChanStruct /*, outFileChan2 chan<- string, write2 bool, devInfo string*/) {
 
 	// Set number of Fragments in each Packet
 	nrPkts := 3 //Number of individual Metric Packets in each Datagram
@@ -165,12 +165,14 @@ func MetricFunc(metricChan <-chan string, outAzureChan chan<- structs.AzureChanS
 	// var gpsOut structs.AzureChanStruct
 
 	// Declare Write2 Variables
-	var devTable []string
-	var numDevs int
+	//var devTable []string
+	//var numDevs int
 
+	/*/ Write 2
 	if write2 == true {
 		devTable, numDevs = getFlaggedDevIDsCSV(devInfo)
 	}
+	//*/
 
 	for {
 		// Read in String from channel and convert to []byte
@@ -203,19 +205,19 @@ func MetricFunc(metricChan <-chan string, outAzureChan chan<- structs.AzureChanS
 
 		azureOut.DevID = gpsSlicer(gpsIn, &gpsData)
 
-		//*/ Write Selected Packets to File
+		/*/ Write Selected Packets to File
 		if write2 == true {
 			for x := 0; x < numDevs; x++ {
 				if strings.Compare(azureOut.DevID, devTable[x]) == 0 {
 					outFileChan2 <- readPacketIn
-					//*/ Print Filtered Packets
+					Print Filtered Packets
 					fmt.Println("Filtered Packet")
 					fmt.Printf("%s", hex.Dump(decodedHex))
 					fmt.Println()
-					//*/
 				}
 			}
 		}
+		//*/
 
 		//fmt.Println(azureOut.DevID)
 

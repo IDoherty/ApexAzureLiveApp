@@ -22,9 +22,9 @@ type SimpleObject struct {
 }
 
 //*/ AzureUpload
-func AzureUpload(outAzureChan <-chan structs.AzureChanStruct, devList string) {
+func AzureUpload(outAzureChan <-chan structs.AzureChanStruct /*, devList string*/) {
 
-	go azureUpload(outAzureChan, devList)
+	go azureUpload(outAzureChan /*, devList*/)
 	fmt.Println("Start Data Output to Azure")
 } //*/
 
