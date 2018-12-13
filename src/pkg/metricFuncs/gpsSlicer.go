@@ -5,6 +5,10 @@ import (
 	"encoding/hex"
 )
 
+func Truncate(some float32) float32 {
+	return float32(int(some*100)) / 100
+}
+
 func gpsSlicer(dataPacket []byte, gpsData *GPSStruct) (devID string) {
 
 	//*// DevID - Uint16 or String Formats (pick one)
@@ -17,12 +21,14 @@ func gpsSlicer(dataPacket []byte, gpsData *GPSStruct) (devID string) {
 	gpsData.gpsDate = binary.BigEndian.Uint32(dataPacket[6:10])
 	//*/
 
-	/*// Coded Latitude, Longitude & Altitude
-	gpsData.codedLatDeg = binary.LittleEndian.Uint32(dataPacket[10:14])
-	gpsData.codedLatMin =
-	gpsData.codedLongDeg = binary.LittleEndian.Uint32(dataPacket[14:18])
-	gpsData.codedLongMin =
-	gpsData.codedAlt = binary.LittleEndian.Uint16(dataPacket[18:20])
+	//*// Coded Latitude, Longitude & Altitude
+	tempULat := binary.LittleEndian.Uint32(dataPacket[10:14])
+	gpsData.codedLat = int32(tempULat)
+
+	tempULong := binary.LittleEndian.Uint32(dataPacket[14:18])
+	gpsData.codedLong = int32(tempULong)
+
+	//gpsData.codedAlt = binary.LittleEndian.Uint16(dataPacket[18:20])
 	//*/
 
 	//*// Coded Speed

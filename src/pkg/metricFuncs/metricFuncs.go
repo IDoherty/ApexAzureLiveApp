@@ -67,14 +67,12 @@ type MetricStruct struct { // Contains All Fields Used in Various Metric Packets
 }
 
 type GPSStruct struct {
-	devID   string
-	gpsTime uint32
-	gpsDate uint32
-	//	codedLatDeg uint32
-	//	codedLatMin  uint32
-	//	codedLongDeg uint32
-	//	codedLongMin uint32
-	//	codedAlt     uint16
+	devID     string
+	gpsTime   uint32
+	gpsDate   uint32
+	codedLat  int32
+	codedLong int32
+	//codedAlt   uint16
 	codedSpeed uint16
 	//	magX         uint16
 	//	magY         uint16
@@ -94,30 +92,34 @@ type DecodedStruct struct {
 	TotalDecel uint16
 	//	StepBalLeft     float32
 	//	StepBalRight    float32
-	Impacts uint16
-	Dsl     uint16
-	//	decodedLat  uint32
-	//	decodedLong uint32
+	Impacts     uint16
+	Dsl         uint16
+	decodedLat  int32
+	decodedLong int32
 }
 
 // Temporary Struct for generation of Metrics at Fenway.
 // Data sored as Name:Value `JSON Designator for Name` which outputs "Designator":Value when converted to JSON
 type FenwayMetricsStruct struct {
-	//	PktNo 		uint16
-	//	DevID    	uint16
+	//DevID   	uint16
+	//PktNo 		uint16
+
 	TotalDistance float32 `json:"TDist"`
 	MaxSpeed      float32 `json:"MaxSp"`
 	CurrentSpeed  float32 `json:"CurSp"`
-	Impacts       uint16  `json:"Impacts"`
-	Sprints       uint16  `json:"Sprints`
+
+	Impacts uint16 `json:"Impacts"`
+	Sprints uint16 `json:"Sprints`
+
+	//DecodedLat  uint32 `json:"Latitude"`
+	//DecodedLong uint32 `json:"Longitude"`
+	GPSTime uint32 `json:"GPS_Time"`
+	GPSDate uint32 `json:"GPS_Date"`
 }
 
 /*/ FenwayGPSStruct
 type FenwayGPSStruct struct {
-	DecodedLat  uint32 `json:"Latitude"`
-	DecodedLong uint32 `json:"Longitude"`
-	GPSTime     uint32 `json:"GPS Time"`
-	GPSDate     uint32 `json:"GPS Date"`
+
 }
 //*/
 
@@ -127,6 +129,8 @@ type maxMetricLatch struct {
 	TotalDistance float32
 	Impacts       uint16
 	Sprints       uint16
+	GpsTime       uint32
+	GpsDate       uint32
 }
 
 func truncate(some float32) float32 {
@@ -164,9 +168,10 @@ func MetricFunc(metricChan <-chan string, outAzureChan chan<- structs.AzureChanS
 	var azureOut structs.AzureChanStruct
 	// var gpsOut structs.AzureChanStruct
 
-	// Declare Write2 Variables
-	//var devTable []string
-	//var numDevs int
+	/*/ Declare Write2 Variables
+	var devTable []string
+	var numDevs int
+	//*/
 
 	/*/ Write 2
 	if write2 == true {
@@ -271,6 +276,18 @@ func MetricFunc(metricChan <-chan string, outAzureChan chan<- structs.AzureChanS
 					maxMetricVals[x].Sprints = decodedMetrics.TotalAccel
 				} else {
 					decodedMetrics.TotalAccel = maxMetricVals[x].Sprints
+				}
+
+				if gpsData.gpsTime > maxMetricVals[x].GpsTime {
+					maxMetricVals[x].GpsTime = gpsData.gpsTime
+				} else {
+					gpsData.gpsTime = maxMetricVals[x].GpsTime
+				}
+
+				if gpsData.gpsDate > maxMetricVals[x].GpsDate {
+					maxMetricVals[x].GpsDate = gpsData.gpsDate
+				} else {
+					gpsData.gpsDate = maxMetricVals[x].GpsDate
 				}
 
 				newDevFlag = false
