@@ -94,8 +94,8 @@ type DecodedStruct struct {
 	//	StepBalRight    float32
 	Impacts     uint16
 	Dsl         uint16
-	decodedLat  int32
-	decodedLong int32
+	decodedLat  float32
+	decodedLong float32
 }
 
 // Temporary Struct for generation of Metrics at Fenway.
@@ -111,10 +111,10 @@ type FenwayMetricsStruct struct {
 	Impacts uint16 `json:"Impacts"`
 	Sprints uint16 `json:"Sprints`
 
-	//DecodedLat  uint32 `json:"Latitude"`
-	//DecodedLong uint32 `json:"Longitude"`
-	GPSTime uint32 `json:"GPS_Time"`
-	GPSDate uint32 `json:"GPS_Date"`
+	DecodedLat  float32 `json:"Latitude"`
+	DecodedLong float32 `json:"Longitude"`
+	GPSTime     uint32  `json:"GPS_Time"`
+	GPSDate     uint32  `json:"GPS_Date"`
 }
 
 /*/ FenwayGPSStruct
@@ -313,6 +313,8 @@ func MetricFunc(metricChan <-chan string, outAzureChan chan<- structs.AzureChanS
 		fenwayMetrics.TotalDistance = decodedMetrics.TotalDistance
 		fenwayMetrics.Impacts = decodedMetrics.Impacts
 		fenwayMetrics.Sprints = decodedMetrics.TotalAccel
+		fenwayMetrics.DecodedLat = decodedMetrics.decodedLat
+		fenwayMetrics.DecodedLong = decodedMetrics.decodedLong
 
 		//fmt.Printf("Current Speed %v m/s - ", fenwayMetrics.CurrentSpeed)
 

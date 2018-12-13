@@ -1,9 +1,5 @@
 package metricFuncs
 
-import (
-	"fmt"
-)
-
 //"fmt"
 //"encoding/binary"
 //"encoding/hex"
@@ -68,38 +64,38 @@ func metricDecoder(metricData *MetricStruct, gpsData *GPSStruct, decodedData *De
 	decodedData.CurrentSpeed = Truncate(floatCurSpeed)
 	//*/
 
-	fmt.Println(gpsData.codedLong)
-	fmt.Println(gpsData.codedLat)
 	//*/ GPS Lat and Long
-	var tempLatInt int32
+	var LatIntDeg int32
+	var tempLatFloat float32
 	var LatOrientation string
 
-	var tempLongInt int32
+	var LongIntDeg int32
+	var tempLongFloat float32
 	var LongOrientation string
 
-	// Lattitude Decode
-	tempLatInt = gpsData.codedLat
-	//tempLatDouble := float64(tempLatInt) / 100000
+	//fmt.Println(gpsData.codedLong)
+	//fmt.Println(gpsData.codedLat)
+
+	// Latitude Decode
+	LatIntDeg = gpsData.codedLat / 10000000
+	tempLatFloat = float32(gpsData.codedLat) / 10000000
 
 	LatOrientation = "N"
-	if tempLatInt < 0 {
-		tempLatInt *= -1
+	if LatIntDeg < 0 {
+		LatIntDeg *= -1
+		tempLatFloat *= -1
 		LatOrientation = "S"
 	}
 
-	LatIntDeg := tempLatInt / 10000000
-	LatIntMin := (tempLatInt - (LatIntDeg * 10000000)) / 100000
-	LatIntSec := (tempLatInt - (LatIntMin * 100000) - (LatIntDeg * 10000000))
+	LatIntMin := (tempLatFloat - float32(LatIntDeg)) * 100
 
-	fmt.Println("tempLatInt - ", tempLatInt)
+	/*/
 	fmt.Println("LatIntDeg - ", LatIntDeg)
 	fmt.Println("LatIntMin - ", LatIntMin)
-	fmt.Println("LatIntSec - ", LatIntSec)
 	fmt.Println()
+	//*/
 
-	//LatIntMinFrac := (LatIntDeg * 6000000) + LatIntMin
-
-	LatDecDeg := (LatIntDeg * 10000000) + (LatIntMin * 10000000 / 60) + (LatIntSec * 10000000 / (3600 * 1000))
+	LatDecDeg := float32(LatIntDeg) + (LatIntMin / 60)
 
 	if LatOrientation != "N" {
 		LatDecDeg *= -1
@@ -108,28 +104,26 @@ func metricDecoder(metricData *MetricStruct, gpsData *GPSStruct, decodedData *De
 	decodedData.decodedLat = LatDecDeg
 
 	// Longitude Decode
-	tempLongInt = gpsData.codedLong
-	//tempLongDouble := float64(tempLongInt) / 100000
+	LongIntDeg = gpsData.codedLong / 10000000
+	tempLongFloat = float32(gpsData.codedLong) / 10000000
 
-	LongOrientation = "E"
-	if tempLongInt < 0 {
-		tempLongInt *= -1
-		LongOrientation = "W"
+	LatOrientation = "N"
+	if LongIntDeg < 0 {
+		LongIntDeg *= -1
+		tempLongFloat *= -1
+		LongOrientation = "S"
 	}
 
-	LongIntDeg := tempLongInt / 10000000
-	LongIntMin := (tempLongInt - (LongIntDeg * 10000000)) / 100000
-	LongIntSec := (tempLongInt - (LongIntMin * 100000) - (LongIntDeg * 10000000))
+	LongIntMin := (tempLongFloat - float32(LongIntDeg)) * 100
 
-	fmt.Println("tempLongInt - ", tempLongInt)
+	/*/
+	fmt.Println("tempLongFloat - ", tempLongFloat)
 	fmt.Println("LongIntDeg - ", LongIntDeg)
 	fmt.Println("LongIntMin - ", LongIntMin)
-	fmt.Println("LongIntSec - ", LongIntSec)
 	fmt.Println()
+	//*/
 
-	//LongIntMinFrac := (LongIntDeg * 6000000) + LongIntMin
-
-	LongDecDeg := (LongIntDeg * 10000000) + (LongIntMin * 10000000 / 60) + (LongIntSec * 10000000 / (3600 * 1000))
+	LongDecDeg := float32(LongIntDeg) + (LongIntMin / 60)
 
 	if LongOrientation != "N" {
 		LongDecDeg *= -1
@@ -137,67 +131,11 @@ func metricDecoder(metricData *MetricStruct, gpsData *GPSStruct, decodedData *De
 
 	decodedData.decodedLong = LongDecDeg
 
+	/*/
 	fmt.Print(LatDecDeg)
 	fmt.Println(",", LongDecDeg)
 	fmt.Println()
 	//*/
-
-	/*/
-	int32_t *p_i32 = (int32_t*)&b2[gps_base + 8];
-	int32_t lat_i = *p_i32;
-	char lat_c = 'N';
-	if (lat_i < 0) {
-	lat_i *= -1;
-	lat_c = 'S';
-	}
-	double lat_d = lat_i;
-
-	++p_i32;
-	int32_t lon_i = *p_i32;
-	char lon_c = 'E';
-	if (lon_i < 0) {
-	lon_i *= -1;
-	lon_c = 'W';
-	}
-	double lon_d = lon_i;
-	lat_d /= 100000;
-	lon_d /= 100000;
-	//*/
-	/*/
-	// lon_i and lat_i have a format like DDMMmmmmm
-	// lon_i_m and lat_i_m should normally have kept the original sign
-	// but we removed it in lon_i and lat_i so we have to add back
-
-	int32_t lon_i_d = lon_i / 10000000;
-	int32_t lon_i_m = lon_i - lon_i_d * 10000000;
-	int32_t lat_i_d = lat_i / 10000000;
-	int32_t lat_i_m = lat_i - lat_i_d * 10000000;
-
-	// _mf is minutes_fraction format and is in 1/10000  minutes
-	// !!! actually NOW is in 1/100000 minutes for max internal resolution
-	//lon_i_mf = lon_i_d * 60 * 10000 + lon_i_m / 10;
-
-	lon_i_mf = lon_i_d * 60 * 100000 + lon_i_m ;
-
-	//lat_i_mf = lat_i_d * 60 * 10000 + lat_i_m / 10;
-
-	lat_i_mf = lat_i_d * 60 * 100000 + lat_i_m ;
-
-	d_lon = lon_i_m;
-	d_lon /= 6000000;
-	d_lon += lon_i_d;
-	if(lon_c != 'E') {
-	d_lon *= -1;
-	lon_i_mf = -lon_i_mf;
-	}
-	d_lat = lat_i_m;
-	d_lat /= 6000000;
-	d_lat += lat_i_d;
-	if(lat_c != 'N') {
-	d_lat *= -1;
-	lat_i_mf = -lat_i_mf;
-	}
-
 	//*/
 
 	return
