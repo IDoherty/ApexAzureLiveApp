@@ -22,8 +22,8 @@ func azureFragsDevList(numDevices int, azureIn structs.AzureChanStruct, devTable
 	for x := 0; x < numDevices; x++ {
 		if strings.Compare(azureIn.DevID, devTable[x].DevID) == 0 {
 			azureFragIDs.DevID = azureIn.DevID
-			azureFragIDs.PlayerID = devTable[x].PlayerID
-			azureFragIDs.TeamID = devTable[x].TeamID
+			//azureFragIDs.PlayerID = devTable[x].PlayerID
+			//azureFragIDs.TeamID = devTable[x].TeamID
 			devFlag = 1
 			break
 		}

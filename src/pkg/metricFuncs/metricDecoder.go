@@ -15,6 +15,10 @@ func metricDecoder(metricData *MetricStruct, gpsData *GPSStruct, decodedData *De
 	tempDist := metricData.sessDist
 	var floatDist float32 = float32(tempDist) * DistConv
 	decodedData.TotalDistance = Truncate(floatDist)
+
+	/*/ Raw Distance Check
+	fmt.Println(floatDist)
+	fmt.Println(decodedData.TotalDistance)
 	//*/
 
 	/*/ Session Distances Z5&6

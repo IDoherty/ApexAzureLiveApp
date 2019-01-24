@@ -73,9 +73,9 @@ func ProcPackets(inUDPChan <-chan string, outUDPChan chan<- string, metricChan c
 /*/
 
 //Packet Processing - New (Now also Passing values to File Writing Function
-func ProcPackets(inUDPChan <-chan string, metricChan chan<- string, outFileChan chan<- string, keepAlive []byte) {
+func ProcPackets(inUDPChan <-chan string, metricChan chan<- string, outFileChan chan<- string, keepAlive []byte, writeVals bool) {
 
-	procPackets(inUDPChan, metricChan, outFileChan, keepAlive)
+	procPackets(inUDPChan, metricChan, outFileChan, keepAlive, writeVals)
 }
 
 // Packet Validity Tester - Confirms that all Packets recieved conform with the expected format

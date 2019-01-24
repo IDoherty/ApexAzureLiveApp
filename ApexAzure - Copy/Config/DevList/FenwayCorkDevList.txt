@@ -1,0 +1,25 @@
+cdab,00,Prototype,00,00,Team
+aa2b,02,Anthony Nash,01,00,Cork
+fc12,02,Sean O'Donoghue,02,00,Cork
+0353,02,Damien Cahalane,03,00,Cork
+0283,02,Colm Spillane,04,00,Cork
+ff84,02,Christopher Joyce,05,00,Cork
+bf97,02,Eoin Cadogan,06,00,Cork
+4343,02,Mark Coleman,07,00,Cork
+626d,02,Bill Cooper,08,00,Cork
+7cfd,02,Darragh Fitgibbon,09,00,Cork
+5b3e,02,Daniel Kearney,10,00,Cork
+04d3,02,Conor Lehane,11,00,Cork
+147d,02,Shane Kingston,12,00,Cork
+f6c9,02,Luke Meade,13,00,Cork
+da9e,02,Tim O'Mahony,14,00,Cork
+9ed6,02,Patrick Horgan,15,00,Cork
+2e3a,02,Jack O'Connor,17,00,Cork
+34b9,02,Eoghan Murphy,18,00,Cork
+624a,02,Robbie O'Flynn,19,00,Cork
+5858,02,William Kearney,20,00,Cork
+a3ff,02,Dean Brosnan,21,00,Cork
+cf27,02,David Griffin,22,00,Cork
+b3a2,02,Darren Browne,23,00,Cork
+6a81,02,Jamie Coughlan,24,00,Cork
+060f,02,Stephan Murphy,27,00,Cork

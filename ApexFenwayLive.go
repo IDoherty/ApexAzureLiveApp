@@ -37,6 +37,7 @@ func main() {
 	// Read in Config Variables
 	//sessionWrite, sessionWrite2, keepAlive, devList, localAddr, sessionName
 	config := aggFuncs.GetConfigCSV()
+	fmt.Println(config)
 
 	// Build/Read Variables
 	// Keep Alive Packet Identifier - Create a String of Hex Bytes for Comparison
@@ -66,15 +67,18 @@ func main() {
 	//*/  Azure Output Channel - Pass Message Data and Device Identifier to Azure Upload Thread
 	outAzureChan := make(chan structs.AzureChanStruct, 64)
 	//*/
+	fmt.Println("Channels Set")
 
 	//*/  Start Packet Processing Threads
 	// outUDPChan provides a direct bypass to the metric functions if this program is to serve as an Aggregator only, or a way to pass unmodified packets out over UDP in parallel to the metric processing.
-	go aggFuncs.ProcPackets(inUDPChan /*, outUDPChan*/, outFileChan, metricChan, keepAlive) // Requires aggFuncs.UdpTransmit and udpServer.UdpServer for outUDPChan
+	go aggFuncs.ProcPackets(inUDPChan, outFileChan, metricChan, keepAlive, config.WriteOn) // Requires aggFuncs.UdpTransmit and udpServer.UdpServer for outUDPChan
+	fmt.Println("Packet Processor Started")
 	//*/
 
 	//*/  Start File Writing Threads - Write Aggregated Output to File
 	if config.WriteOn == true {
 		go aggFuncs.WriteToFile(outFileChan, config.SessionWrite)
+		fmt.Println("Writing Packets out to ", config.SessionWrite)
 	}
 	//*/
 
@@ -92,11 +96,25 @@ func main() {
 	//*/
 
 	//*/  Start Metric Processing Threads - Process Aggregated Packets and Output Metrics (Azure and UDP are options)
-	go metricFuncs.MetricFunc(metricChan /*, outUDPChan*/, outAzureChan /*, outFileChan2, config.Write2On, config.DevList*/)
+	go metricFuncs.MetricFunc(metricChan, outAzureChan, config.AzureOn)
+	fmt.Println("Metric Functions Started")
 	//*
 
 	//*/  Start Azure Output Threads - Send Packets up to Azure
-	go azureFuncs.AzureUpload(outAzureChan /*, config.DevList*/)
+	if config.AzureOn == true {
+		go azureFuncs.AzureUpload(outAzureChan /*, config.DevList*/)
+		fmt.Println("Azure Functions Started")
+	} else {
+		go func(clearAzureChan <-chan structs.AzureChanStruct) {
+			for {
+				clear := <-clearAzureChan
+				//fmt.Println("Draining AzureChan")
+				clear = structs.AzureChanStruct{}
+				clear = clear
+			}
+		}(outAzureChan)
+	}
+
 	//*/
 
 	//*/  Start UDP Connection Thread for each beacon connected to the system. Addresses taken from CSV file.
@@ -111,6 +129,7 @@ func main() {
 
 	if config.ReadInOn == true {
 		go aggFuncs.ReadFromFile(inUDPChan, config.SessionName)
+		fmt.Println("Reading Packets in from ", config.SessionName)
 	}
 	//*/
 

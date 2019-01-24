@@ -3,7 +3,7 @@ package azureFuncs
 
 import (
 	//	"encoding/json"
-	"fmt"
+	//"fmt"
 	"strings"
 	"time"
 
@@ -49,6 +49,8 @@ func azurePacketBuilder(fragChan <-chan structs.AzureOutputStruct, strMsgChan ch
 				//*/
 			}
 			strMsg = "[" + strMsg + "]"
+
+			/*/
 			fmt.Println("Packet Payload - ", strMsg)
 			fmt.Println(len(azurePacket))
 			fmt.Println()

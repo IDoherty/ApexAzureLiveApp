@@ -41,9 +41,9 @@ type AzureFragID struct {
 
 // Azure Fragment Identifiers Struct built from Input Struct and Values in the Lookup Table
 type AzureFragIDDevList struct {
-	DevID    string
-	TeamID   string `json:"tID"`
-	PlayerID string `json:"pID"`
+	DevID string
+	//	TeamID   string `json:"tID"`
+	//	PlayerID string `json:"pID"`
 }
 
 // Output Structure containing JSON Strings - Values are Concatenated to form a Fragment of the Output Packet

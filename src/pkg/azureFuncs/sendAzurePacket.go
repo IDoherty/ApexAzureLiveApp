@@ -49,20 +49,23 @@ func sendAzurePacket(strMsgChan <-chan string) {
 		fmt.Println()
 		//*/
 
-		tMsg = buildFenwayMessage("Fenway", "18", strMsg)
+		if strMsg != "[]" {
+			tMsg = buildFenwayMessage("Fenway", "18", strMsg)
 
-		/*/ Output Packet Payload
-		fmt.Println("output string", string(strMsg))
-		fmt.Println()
-		//*/
+			/*/ Output Packet Payload
+			fmt.Println("output string", string(strMsg))
+			fmt.Println()
+			//*/
 
-		go func(tMsg *servicebus.Message) {
-			ctx, cancel := context.WithDeadline(context.Background(), messageTimeout)
-			defer cancel()
-			err := topic.Send(ctx, tMsg)
-			if err != nil {
-				fmt.Println("Error Sending to Topic: ", err)
-			}
-		}(tMsg)
+			go func(tMsg *servicebus.Message) {
+				ctx, cancel := context.WithDeadline(context.Background(), messageTimeout)
+				defer cancel()
+				err := topic.Send(ctx, tMsg)
+				if err != nil {
+					fmt.Println("Error Sending to Topic: ", err)
+				}
+			}(tMsg)
+		}
+
 	}
 }

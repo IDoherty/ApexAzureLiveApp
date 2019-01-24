@@ -1,0 +1,10 @@
+Sessions/TestSessions/Session - 
+true
+Sessions/TestSessions/CutSession - 
+false
+Sessions/Alumni Stadium - Cork - 17_11_18/Session- 2018-11-17 18-06-47
+false
+194.55.105.52:0
+Config/NetworkInfo/NetworkInfoKingspan.txt
+true
+Config/DevList/FenwayCorkDevList.txt

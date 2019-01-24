@@ -1,7 +1,7 @@
 package aggFuncs
 
 import (
-	//Writes iW"fmt"
+	//"fmt"
 	"log"
 
 	//"time"
@@ -9,11 +9,14 @@ import (
 	"encoding/hex"
 )
 
-func procPackets(inUDPChan <-chan string /*outUDPChan chan<- string,*/, metricChan chan<- string, outFileChan chan<- string, keepAlive []byte) {
+func procPackets(inUDPChan <-chan string, outFileChan chan<- string, metricChan chan<- string, keepAlive []byte, writeVals bool) {
 
 	// Build Variables
 	var arrayLastPackets [50]LastPacket
 	//valPkt:= 0;
+
+	var fileData string
+	var metricData string
 
 	keepAlivePacketID := make([]byte, 2)
 
@@ -47,19 +50,20 @@ func procPackets(inUDPChan <-chan string /*outUDPChan chan<- string,*/, metricCh
 			seqNo := destringifiedData[4:5]
 			slotNo := destringifiedData[5:6]
 			gpsTime := binary.BigEndian.Uint32(destringifiedData[8:12])
+			//devID := hex.EncodeToString(destringifiedData[6:8])
 
 			/*/ Packet Identifier Slices
 			fmt.Printf("%s", hex.Dump(destringifiedData))
 			fmt.Println()
 
-			fmt.Println(slotNo[0])
-			fmt.Println(seqNo[0])
-			fmt.Println()
+			//fmt.Println(slotNo[0])
+			//fmt.Println(seqNo[0])
+			fmt.Println(devID)
 			fmt.Println()
 			//*/
 
 			valid, pktType := TestValidity(&arrayLastPackets[slotNo[0]], seqNo[0], gpsTime)
-
+			//fmt.Println(valid)
 			//countChan <- pktType
 			pktType++
 
@@ -73,13 +77,16 @@ func procPackets(inUDPChan <-chan string /*outUDPChan chan<- string,*/, metricCh
 				//*/
 
 				//*/ Channel to Metric Functions
-				metricData := returnedData
+				metricData = returnedData
 				metricChan <- metricData
+				//fmt.Println(metricData)
 				//*/
 
 				//*/ Channel to Output File Writer
-				fileData := returnedData
-				outFileChan <- fileData
+				if writeVals {
+					fileData = returnedData
+					outFileChan <- fileData
+				}
 				//*/
 			}
 

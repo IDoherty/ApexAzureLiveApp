@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"strings"
+	"time"
 
 	structs "pkg/structPrototypes"
 )
@@ -77,7 +78,11 @@ type GPSStruct struct {
 	//	magX         uint16
 	//	magY         uint16
 	//	magZ         uint16
-	Flags uint16 //GPS Lock -> 0x8000, HR -> 0x4000, Low Bat -> 0x2000, Ext Flag -> 0x1000
+	UTCTime  time.Time
+	UnixTime int64
+	MilliSec uint32
+	GpsHAcc  uint32
+	Flags    uint16 //GPS Lock -> 0x8000, HR -> 0x4000, Low Bat -> 0x2000, Ext Flag -> 0x1000
 }
 
 type DecodedStruct struct {
@@ -111,10 +116,14 @@ type FenwayMetricsStruct struct {
 	Impacts uint16 `json:"Impacts"`
 	Sprints uint16 `json:"Sprints`
 
-	DecodedLat  float32 `json:"Latitude"`
-	DecodedLong float32 `json:"Longitude"`
-	GPSTime     uint32  `json:"GPS_Time"`
-	GPSDate     uint32  `json:"GPS_Date"`
+	DecodedLat  float32 `json:"Lat"`
+	DecodedLong float32 `json:"Long"`
+	GPSTime     uint32  `json:"GPSTime"`
+	GPSDate     uint32  `json:"GPSDate"`
+	UTCTime     string  `json:"UTC"`
+	Unix        int64   `json:"Unix"`
+	MilliSec    uint32  `json:"ms"`
+	//GpsHAcc     uint32  `json:"H-Acc"`
 }
 
 /*/ FenwayGPSStruct
@@ -137,7 +146,7 @@ func truncate(some float32) float32 {
 	return float32(int(some*10) / 10)
 }
 
-func MetricFunc(metricChan <-chan string, outAzureChan chan<- structs.AzureChanStruct /*, outFileChan2 chan<- string, write2 bool, devInfo string*/) {
+func MetricFunc(metricChan <-chan string, outAzureChan chan<- structs.AzureChanStruct, AzureOn bool /*, outFileChan2 chan<- string, write2 bool, devInfo string*/) {
 
 	// Set number of Fragments in each Packet
 	nrPkts := 3 //Number of individual Metric Packets in each Datagram
@@ -159,6 +168,8 @@ func MetricFunc(metricChan <-chan string, outAzureChan chan<- structs.AzureChanS
 	var maxMetricVals []maxMetricLatch
 	var newDevFlag bool = true
 
+	//var pkt_cnt uint64 = 0
+
 	// Declare Fenway Metrics Struct - now including GPS Metrics
 	var fenwayMetrics FenwayMetricsStruct
 	//var fenwayGPS FenwayGPSStruct
@@ -178,6 +189,8 @@ func MetricFunc(metricChan <-chan string, outAzureChan chan<- structs.AzureChanS
 		devTable, numDevs = getFlaggedDevIDsCSV(devInfo)
 	}
 	//*/
+
+	//fmt.Println("Variables Declared")
 
 	for {
 		// Read in String from channel and convert to []byte
@@ -208,7 +221,7 @@ func MetricFunc(metricChan <-chan string, outAzureChan chan<- structs.AzureChanS
 		// Slice GPS Data - Slice all 28 bytes (+ 2 devID Bytes) & pass to function
 		gpsIn = packetIn[2:32]
 
-		azureOut.DevID = gpsSlicer(gpsIn, &gpsData)
+		gpsSlicer(gpsIn, &gpsData)
 
 		/*/ Write Selected Packets to File
 		if write2 == true {
@@ -236,8 +249,8 @@ func MetricFunc(metricChan <-chan string, outAzureChan chan<- structs.AzureChanS
 			tempCnt := metricSlicer(metricPack, &metricRaw)
 			pktTypes[x] = tempCnt
 
-			/*/
-			fmt.Println(tempVar)
+			/*/ Metric Packs Dump
+			fmt.Println(hex.EncodeToString(metricPack))
 			fmt.Println()
 			//*/
 		}
@@ -246,7 +259,7 @@ func MetricFunc(metricChan <-chan string, outAzureChan chan<- structs.AzureChanS
 
 		// Test New Max Speed Val
 		for x := 0; x < len(maxMetricVals); x++ {
-			if strings.Compare(maxMetricVals[x].DevID, azureOut.DevID) == 0 {
+			if strings.Compare(maxMetricVals[x].DevID, gpsData.devID) == 0 {
 
 				/*/ Max Speed Test Prints
 				fmt.Println("Comparing Speeds - ", azureOut.DevID)
@@ -298,7 +311,7 @@ func MetricFunc(metricChan <-chan string, outAzureChan chan<- structs.AzureChanS
 		if newDevFlag == true {
 			//fmt.Println("New Packet")
 			maxMetricVals = append(maxMetricVals, maxMetricLatch{
-				DevID:         azureOut.DevID,
+				DevID:         gpsData.devID,
 				MaxSpeed:      decodedMetrics.MaxSpeed,
 				TotalDistance: decodedMetrics.TotalDistance,
 				Impacts:       decodedMetrics.Impacts,
@@ -308,6 +321,12 @@ func MetricFunc(metricChan <-chan string, outAzureChan chan<- structs.AzureChanS
 			newDevFlag = true
 		}
 
+		//*/ Max Vals Test Print
+		fmt.Println("Max Dist - ", maxMetricVals)
+		fmt.Println(gpsData.devID)
+		fmt.Println()
+		//*/
+
 		fenwayMetrics.MaxSpeed = decodedMetrics.MaxSpeed
 		fenwayMetrics.CurrentSpeed = decodedMetrics.CurrentSpeed
 		fenwayMetrics.TotalDistance = decodedMetrics.TotalDistance
@@ -315,8 +334,17 @@ func MetricFunc(metricChan <-chan string, outAzureChan chan<- structs.AzureChanS
 		fenwayMetrics.Sprints = decodedMetrics.TotalAccel
 		fenwayMetrics.DecodedLat = decodedMetrics.decodedLat
 		fenwayMetrics.DecodedLong = decodedMetrics.decodedLong
+		fenwayMetrics.GPSDate = gpsData.gpsDate
+		fenwayMetrics.GPSTime = gpsData.gpsTime
+		fenwayMetrics.UTCTime = gpsData.UTCTime.Format("2006-01-02 15:04:05.0")
+		fenwayMetrics.Unix = gpsData.UnixTime
+		fenwayMetrics.MilliSec = gpsData.MilliSec
 
 		//fmt.Printf("Current Speed %v m/s - ", fenwayMetrics.CurrentSpeed)
+
+		// Clear Structs
+		metricRaw = MetricStruct{}
+		decodedMetrics = DecodedStruct{}
 
 		/*/ GPS Pack
 		fenwayGPS.DecodedLat = decodedMetrics.decodedLat
@@ -332,7 +360,21 @@ func MetricFunc(metricChan <-chan string, outAzureChan chan<- structs.AzureChanS
 
 		//*/ outAzureChan
 		azureOut.RawData = string(metricJSON)
-		outAzureChan <- azureOut
+
+		/*/ Output Packets - Printout and Counter
+		fmt.Println(azureOut)
+		pkt_cnt++
+		fmt.Println(pkt_cnt)
+		fmt.Println()
+		//*/
+
+		if AzureOn == true {
+			outAzureChan <- azureOut
+		} else {
+
+			azureOut = structs.AzureChanStruct{}
+		}
+
 		//*/
 
 		/*/ outUDPChan
@@ -355,7 +397,7 @@ func MetricFunc(metricChan <-chan string, outAzureChan chan<- structs.AzureChanS
 		fmt.Println("gpsDate		- ", gpsData.gpsDate)
 		fmt.Println("codedLat	- ", gpsData.codedLat)
 		fmt.Println("codedLong	- ", gpsData.codedLong)
-		fmt.Println("codedAlt	- ", gpsData.codedAlt)
+		//fmt.Println("codedAlt	- ", gpsData.codedAlt)
 		fmt.Println("codedSpeed	- ", gpsData.codedSpeed)
 		//fmt.Println("magX		- ", gpsData.magX)
 		//fmt.Println("magY		- ", gpsData.magY)
