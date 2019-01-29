@@ -31,6 +31,7 @@ func azureFrags(azureIn structs.AzureChanStruct, fragChan chan<- structs.AzureOu
 		fmt.Println("Marshall Error:", err)
 	}
 	azureFragment.FragIDs = string(tempval)
+	azureFragment.Unix = azureIn.Unix
 
 	/*/ Filled Fragment Printout
 	fmt.Println("Filled Fragment - ", azureFragment)

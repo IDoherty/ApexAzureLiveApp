@@ -11,7 +11,7 @@ import (
 
 func readFromFile(inUDPChan chan<- string, sessionName string) {
 
-	pkt20 := time.NewTicker(time.Millisecond * 2)
+	pkt20 := time.NewTicker(time.Millisecond * 5)
 
 	session, err := os.Open(sessionName)
 	if err != nil {

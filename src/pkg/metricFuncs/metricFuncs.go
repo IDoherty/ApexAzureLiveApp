@@ -4,6 +4,7 @@ import (
 	"encoding/hex"
 	"encoding/json"
 	"fmt"
+	"strconv"
 	"strings"
 	"time"
 
@@ -114,15 +115,15 @@ type FenwayMetricsStruct struct {
 	CurrentSpeed  float32 `json:"CurSp"`
 
 	Impacts uint16 `json:"Impacts"`
-	Sprints uint16 `json:"Sprints`
+	Sprints uint16 `json:"Sprints"`
 
 	DecodedLat  float32 `json:"Lat"`
 	DecodedLong float32 `json:"Long"`
-	GPSTime     uint32  `json:"GPSTime"`
-	GPSDate     uint32  `json:"GPSDate"`
-	UTCTime     string  `json:"UTC"`
-	Unix        int64   `json:"Unix"`
-	MilliSec    uint32  `json:"ms"`
+	//GPSTime     uint32  `json:"GPSTime"`
+	//GPSDate     uint32  `json:"GPSDate"`
+	//UTCTime     string  `json:"UTC"`
+	//Unix        int64   `json:"Unix"`
+	//MilliSec    uint32  `json:"ms"`
 	//GpsHAcc     uint32  `json:"H-Acc"`
 }
 
@@ -328,7 +329,11 @@ func MetricFunc(metricChan <-chan string, outAzureChan chan<- structs.AzureChanS
 		fmt.Println(gpsData.devID)
 		fmt.Println()
 		//*/
+
 		azureOut.DevID = gpsData.devID
+		azureOut.Unix = strconv.FormatInt(gpsData.UnixTime, 10)
+		//fmt.Println(azureOut.Unix)
+
 		fenwayMetrics.MaxSpeed = decodedMetrics.MaxSpeed
 		fenwayMetrics.CurrentSpeed = decodedMetrics.CurrentSpeed
 		fenwayMetrics.TotalDistance = decodedMetrics.TotalDistance
@@ -336,13 +341,15 @@ func MetricFunc(metricChan <-chan string, outAzureChan chan<- structs.AzureChanS
 		fenwayMetrics.Sprints = decodedMetrics.TotalAccel
 		fenwayMetrics.DecodedLat = decodedMetrics.decodedLat
 		fenwayMetrics.DecodedLong = decodedMetrics.decodedLong
-		fenwayMetrics.GPSDate = gpsData.gpsDate
-		fenwayMetrics.GPSTime = gpsData.gpsTime
-		fenwayMetrics.UTCTime = gpsData.UTCTime.Format("2006-01-02 15:04:05.0")
-		fenwayMetrics.Unix = gpsData.UnixTime
-		fenwayMetrics.MilliSec = gpsData.MilliSec
+		/*/ Additional Metrics
+		//fenwayMetrics.GPSDate = gpsData.gpsDate
+		//fenwayMetrics.GPSTime = gpsData.gpsTime
+		//fenwayMetrics.UTCTime = gpsData.UTCTime.Format("2006-01-02 15:04:05.0")
+		//fenwayMetrics.Unix = gpsData.UnixTime
+		//fenwayMetrics.MilliSec = gpsData.MilliSec
 
 		//fmt.Printf("Current Speed %v m/s - ", fenwayMetrics.CurrentSpeed)
+		//*/
 
 		// Clear Structs
 		metricRaw = MetricStruct{}

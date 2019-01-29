@@ -2,7 +2,7 @@
 package azureFuncs
 
 import (
-	//	"encoding/json"
+	"encoding/json"
 	"fmt"
 	"strings"
 	"time"
@@ -16,6 +16,7 @@ func azurePacketBuilder(fragChan <-chan structs.AzureOutputStruct, strMsgChan ch
 	var fragIn structs.AzureOutputStruct
 	var azurePacket []structs.AzureOutputStruct
 	var newDevFlag bool = true
+	var tim structs.UnixStruct
 	var strMsg string
 	//var strMsgTemp string
 
@@ -48,7 +49,13 @@ func azurePacketBuilder(fragChan <-chan structs.AzureOutputStruct, strMsgChan ch
 				}
 				//*/
 			}
-			strMsg = "[" + strMsg + "]"
+
+			unix, err := json.Marshal(tim.Unix)
+			if err != nil {
+				fmt.Println("Marshall Error:", err)
+			}
+
+			strMsg = "[Unix:" + string(unix) + strMsg + "]"
 
 			//*/ Packet Payload and Length
 			fmt.Println("Packet Payload - ", strMsg)
@@ -92,6 +99,10 @@ func azurePacketBuilder(fragChan <-chan structs.AzureOutputStruct, strMsgChan ch
 				//fmt.Println()
 			} else {
 				newDevFlag = true
+			}
+
+			if fragIn.Unix > tim.Unix {
+				tim.Unix = fragIn.Unix
 			}
 
 		}

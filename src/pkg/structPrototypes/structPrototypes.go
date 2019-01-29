@@ -21,6 +21,7 @@ type ConfigStruct struct {
 // Azure Input Struct Containing Raw Metrics from the Processed Packets
 type AzureChanStruct struct {
 	DevID   string
+	Unix    string
 	RawData string
 }
 
@@ -49,5 +50,10 @@ type AzureFragIDDevList struct {
 // Output Structure containing JSON Strings - Values are Concatenated to form a Fragment of the Output Packet
 type AzureOutputStruct struct {
 	FragIDs string
+	Unix    string
 	RawData string
+}
+
+type UnixStruct struct {
+	Unix string `json:"Unix"`
 }
