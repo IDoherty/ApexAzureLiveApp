@@ -20,6 +20,8 @@ func azureFrags(azureIn structs.AzureChanStruct, fragChan chan<- structs.AzureOu
 	//	var devFlag int = 0
 
 	// Fill Output Fragment Identifiers
+
+	//fmt.Println("DevID", azureIn.DevID)
 	azureFragIDs.DevID = azureIn.DevID
 
 	azureFragment.RawData = azureIn.RawData

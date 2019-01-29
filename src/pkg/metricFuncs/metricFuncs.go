@@ -291,6 +291,7 @@ func MetricFunc(metricChan <-chan string, outAzureChan chan<- structs.AzureChanS
 					decodedMetrics.TotalAccel = maxMetricVals[x].Sprints
 				}
 
+				/*/ GPS Time and Date
 				if gpsData.gpsTime > maxMetricVals[x].GpsTime {
 					maxMetricVals[x].GpsTime = gpsData.gpsTime
 				} else {
@@ -302,6 +303,7 @@ func MetricFunc(metricChan <-chan string, outAzureChan chan<- structs.AzureChanS
 				} else {
 					gpsData.gpsDate = maxMetricVals[x].GpsDate
 				}
+				//*/
 
 				newDevFlag = false
 				break
@@ -321,12 +323,12 @@ func MetricFunc(metricChan <-chan string, outAzureChan chan<- structs.AzureChanS
 			newDevFlag = true
 		}
 
-		//*/ Max Vals Test Print
+		/*/ Max Vals Test Print
 		fmt.Println("Max Dist - ", maxMetricVals)
 		fmt.Println(gpsData.devID)
 		fmt.Println()
 		//*/
-
+		azureOut.DevID = gpsData.devID
 		fenwayMetrics.MaxSpeed = decodedMetrics.MaxSpeed
 		fenwayMetrics.CurrentSpeed = decodedMetrics.CurrentSpeed
 		fenwayMetrics.TotalDistance = decodedMetrics.TotalDistance

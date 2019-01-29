@@ -37,7 +37,7 @@ func main() {
 	// Read in Config Variables
 	//sessionWrite, sessionWrite2, keepAlive, devList, localAddr, sessionName
 	config := aggFuncs.GetConfigCSV()
-	fmt.Println(config)
+	//fmt.Println(config)
 
 	// Build/Read Variables
 	// Keep Alive Packet Identifier - Create a String of Hex Bytes for Comparison
@@ -78,7 +78,7 @@ func main() {
 	//*/  Start File Writing Threads - Write Aggregated Output to File
 	if config.WriteOn == true {
 		go aggFuncs.WriteToFile(outFileChan, config.SessionWrite)
-		fmt.Println("Writing Packets out to ", config.SessionWrite)
+		//fmt.Println("Writing Packets out to ", config.SessionWrite, time.Now())
 	}
 	//*/
 
@@ -104,6 +104,7 @@ func main() {
 	if config.AzureOn == true {
 		go azureFuncs.AzureUpload(outAzureChan /*, config.DevList*/)
 		fmt.Println("Azure Functions Started")
+		fmt.Println()
 	} else {
 		go func(clearAzureChan <-chan structs.AzureChanStruct) {
 			for {
