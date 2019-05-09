@@ -1,0 +1,14 @@
+C:\Users\i.doherty\Desktop\ApexAzure\Visual C#\ApiTest\ApiTest\bin\Debug\netcoreapp2.2\ApiTest.deps.json
+C:\Users\i.doherty\Desktop\ApexAzure\Visual C#\ApiTest\ApiTest\bin\Debug\netcoreapp2.2\ApiTest.runtimeconfig.json
+C:\Users\i.doherty\Desktop\ApexAzure\Visual C#\ApiTest\ApiTest\bin\Debug\netcoreapp2.2\ApiTest.runtimeconfig.dev.json
+C:\Users\i.doherty\Desktop\ApexAzure\Visual C#\ApiTest\ApiTest\bin\Debug\netcoreapp2.2\ApiTest.dll
+C:\Users\i.doherty\Desktop\ApexAzure\Visual C#\ApiTest\ApiTest\bin\Debug\netcoreapp2.2\ApiTest.pdb
+C:\Users\i.doherty\Desktop\ApexAzure\Visual C#\ApiTest\ApiTest\obj\Debug\netcoreapp2.2\ApiTest.csprojResolveAssemblyReference.cache
+C:\Users\i.doherty\Desktop\ApexAzure\Visual C#\ApiTest\ApiTest\obj\Debug\netcoreapp2.2\ApiTest.csproj.CoreCompileInputs.cache
+C:\Users\i.doherty\Desktop\ApexAzure\Visual C#\ApiTest\ApiTest\obj\Debug\netcoreapp2.2\ApiTest.RazorAssemblyInfo.cache
+C:\Users\i.doherty\Desktop\ApexAzure\Visual C#\ApiTest\ApiTest\obj\Debug\netcoreapp2.2\ApiTest.RazorAssemblyInfo.cs
+C:\Users\i.doherty\Desktop\ApexAzure\Visual C#\ApiTest\ApiTest\obj\Debug\netcoreapp2.2\ApiTest.AssemblyInfoInputs.cache
+C:\Users\i.doherty\Desktop\ApexAzure\Visual C#\ApiTest\ApiTest\obj\Debug\netcoreapp2.2\ApiTest.AssemblyInfo.cs
+C:\Users\i.doherty\Desktop\ApexAzure\Visual C#\ApiTest\ApiTest\obj\Debug\netcoreapp2.2\ApiTest.RazorTargetAssemblyInfo.cache
+C:\Users\i.doherty\Desktop\ApexAzure\Visual C#\ApiTest\ApiTest\obj\Debug\netcoreapp2.2\ApiTest.dll
+C:\Users\i.doherty\Desktop\ApexAzure\Visual C#\ApiTest\ApiTest\obj\Debug\netcoreapp2.2\ApiTest.pdb

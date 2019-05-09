@@ -1,0 +1,8 @@
+{"SessWrite":"true",
+"SessWrite2":"true",
+"SessReadIn":"true",
+"ReadFile":"NameOfFile",
+"LocalAddr":"IPAddress",
+"BeaconAddr":"BIPAddress",
+"UDPInOn":"true",
+"AzureOn":"true"}

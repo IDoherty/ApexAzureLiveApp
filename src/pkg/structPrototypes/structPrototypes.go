@@ -2,6 +2,7 @@ package structPrototypes
 
 // AzureFuncs Structs
 
+//*/
 // Configuration Struct
 type ConfigStruct struct {
 	SessionWrite  string
@@ -16,6 +17,37 @@ type ConfigStruct struct {
 	DevList       string
 	AzureOn       bool
 	UDPOutOn      bool
+}
+
+//*/
+
+/*/ JSON Config Notes
+
+Use 'true' or 'false' for binary values
+IP Address format is "xxx.xxx.xxx.xxx",though values less than 100 need no additional values
+
+
+"SessWrite":"true",
+"SessWrite2":"true",
+"SessReadIn":"true",
+"ReadFile":"NameOfFile",
+"LocalAddr":"IPAddress",
+"BeaconAddr":"BIPAddress",
+"UDPInOn":"true",
+"AzureOn":"true"
+//*/
+
+type JsonConfigStruct struct {
+	SessWrite  string `json:"SessWrite"`
+	WriteAddr  string `json:"WriteAddr"`
+	SessWrite2 string `json:"SessWrite2"`
+	WriteAddr2 string `json:"WriteAddr2"`
+	SessReadIn string `json:"SessReadIn"`
+	ReadFile   string `json:"ReadFile"`
+	LocalAddr  string `json:"LocalAddr"`
+	BeaconAddr string `json:"BeaconAddr"`
+	UDPInOn    string `json:"UDPInOn"`
+	AzureOn    string `json:"AzureOn"`
 }
 
 // Azure Input Struct Containing Raw Metrics from the Processed Packets
@@ -56,4 +88,9 @@ type AzureOutputStruct struct {
 
 type UnixStruct struct {
 	Unix string `json:"Unix"`
+}
+
+type SecArray struct {
+	LastSec []string
+	CurrSec []string
 }

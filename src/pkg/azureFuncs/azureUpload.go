@@ -81,7 +81,6 @@ func azureUpload(outAzureChan <-chan structs.AzureChanStruct /*, devList string*
 	buildPacket := time.NewTicker(time.Second)
 
 	for {
-
 		select {
 		case azureIn = <-outAzureChan:
 			/*/ Test Printouts

@@ -4,7 +4,7 @@ import (
 	"encoding/binary"
 	"encoding/hex"
 
-	//"fmt"
+	//	"fmt"
 	"strconv"
 	"time"
 )
@@ -23,6 +23,7 @@ func gpsSlicer(dataPacket []byte, gpsData *GPSStruct) {
 	//*/ GPS Time
 	gpsTimeRaw := binary.BigEndian.Uint32(dataPacket[2:6])
 	gpsData.gpsTime = gpsTimeRaw
+	//fmt.Println(gpsTimeRaw)
 
 	gpsTimeHour := gpsTimeRaw / 10000000
 	gpsTimeMin := gpsTimeRaw/100000 - (gpsTimeHour * 100)
@@ -84,6 +85,9 @@ func gpsSlicer(dataPacket []byte, gpsData *GPSStruct) {
 
 	tempULong := binary.LittleEndian.Uint32(dataPacket[14:18])
 	gpsData.codedLong = int32(tempULong)
+
+	//fmt.Println(tempULat)
+	//fmt.Println(tempULong)
 
 	//gpsData.codedAlt = binary.LittleEndian.Uint16(dataPacket[18:20])
 	//*/

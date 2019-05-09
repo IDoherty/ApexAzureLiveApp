@@ -1,0 +1,1 @@
+Sessions\KingspanSessions - 23_02_19/Session - ,True,Sessions/TestSessions/CutSession - ,false,Sessions/KingspanSessions - 25_01_19/Session - 2019-01-25 19-34-55,false,172.16.0.104:0,Config/NetworkInfo/NetworkInfoKingspan.txt,true,Config/DevList/LieferingDevList.txt,true,false

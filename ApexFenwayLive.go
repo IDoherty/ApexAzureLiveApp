@@ -34,10 +34,19 @@ var udp UDPServer
 // Start of Main Body of Code
 func main() {
 
-	// Read in Config Variables
+	/*/ Read in Config Variables - OLD (CSV Version)
 	//sessionWrite, sessionWrite2, keepAlive, devList, localAddr, sessionName
 	config := aggFuncs.GetConfigCSV()
 	//fmt.Println(config)
+	//*/
+
+	//*/ Read in Config Variables - NEW (JSON Version)
+	config := aggFuncs.GetConfigJSON()
+
+	fmt.Println(config)
+	for _, test := range config {
+		fmt.Println(test.toString())
+	}
 
 	// Build/Read Variables
 	// Keep Alive Packet Identifier - Create a String of Hex Bytes for Comparison
@@ -45,6 +54,9 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
+
+	// 5 Second Ticker
+	SecTick := time.NewTicker(time.Second * 5)
 
 	// Setup Communication Channels for passing between sections of code
 	//*/  Input Channel - Pass from ReadIn routines to Processing Thread
@@ -136,7 +148,12 @@ func main() {
 
 	// Run Indefinitely until Break. Add Monitoring for Functions and Routines?	Break Function to Kill code?
 	for {
-		time.Sleep(time.Second * 10)
+		//time.Sleep(time.Second * 10)
 		//fmt.Println("ping")
+
+		select {
+		case <-SecTick.C:
+			//fmt.Println(metricChan)
+		}
 	}
 }

@@ -14,6 +14,7 @@ import (
 
 func GetConfigCSV() structs.ConfigStruct {
 
+	//*/
 	textIn, err := os.Open("Config/config.txt")
 	if err != nil {
 		log.Fatal(err)
@@ -70,6 +71,6 @@ func GetConfigCSV() structs.ConfigStruct {
 		configSettings.UDPOutOn = true
 		fmt.Println("UDP Send On")
 	}
-
+	//*/
 	return configSettings
 }

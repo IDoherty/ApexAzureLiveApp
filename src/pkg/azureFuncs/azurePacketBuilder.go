@@ -50,17 +50,22 @@ func azurePacketBuilder(fragChan <-chan structs.AzureOutputStruct, strMsgChan ch
 				//*/
 			}
 
+			// AMM - Removed , JSON format is not correct
 			unix, err := json.Marshal(tim.Unix)
 			if err != nil {
 				fmt.Println("Marshall Error:", err)
 			}
-
-			strMsg = "[Unix:" + string(unix) + strMsg + "]"
+			fmt.Println("Unix Time is removed " + string(unix))
+			//AMM	  Removed , JSON format is not correct
+			//strMsg = "{Unix:" + string(unix) + "}," + strMsg
+			//Just adding array notitaion to the JSON format
+			strMsg = "[" + strMsg + "]"
 
 			//*/ Packet Payload and Length
-			fmt.Println("Packet Payload - ", strMsg)
-			fmt.Println(len(azurePacket))
-			fmt.Println()
+			//fmt.Println("Packet Payload - ", strMsg)
+			//fmt.Println(len(azurePacket))
+			//fmt.Println()
+			fmt.Println(strMsg)
 			//*/
 
 			/*/ Packet Formatting Prototype
