@@ -119,8 +119,8 @@ type FenwayMetricsStruct struct {
 	Impacts uint16 `json:"Impacts"`
 	Sprints uint16 `json:"Sprints"`
 
-	DecodedLat  float32 `json:"Lat"`
-	DecodedLong float32 `json:"Long"`
+	//DecodedLat  float32 `json:"Lat"`
+	//DecodedLong float32 `json:"Long"`
 	//GPSTime     uint32  `json:"GPSTime"`
 	//GPSDate     uint32  `json:"GPSDate"`
 	//UTCTime     string  `json:"UTC"`
@@ -149,7 +149,7 @@ func truncate(some float32) float32 {
 	return float32(int(some*10) / 10)
 }
 
-func MetricFunc(metricChan <-chan string, outAzureChan chan<- structs.AzureChanStruct, AzureOn bool /*, outFileChan2 chan<- string, write2 bool, devInfo string*/) {
+func MetricFunc(metricChan <-chan string, metricJsonChan chan<- string, outAzureChan chan<- structs.AzureChanStruct, AzureOn bool /*, outFileChan2 chan<- string, write2 bool, devInfo string*/) {
 
 	// Set number of Fragments in each Packet
 	nrPkts := 3 //Number of individual Metric Packets in each Datagram
@@ -345,8 +345,8 @@ func MetricFunc(metricChan <-chan string, outAzureChan chan<- structs.AzureChanS
 		fenwayMetrics.TotalDistance = decodedMetrics.TotalDistance
 		fenwayMetrics.Impacts = decodedMetrics.Impacts
 		fenwayMetrics.Sprints = decodedMetrics.TotalAccel
-		fenwayMetrics.DecodedLat = decodedMetrics.decodedLat
-		fenwayMetrics.DecodedLong = decodedMetrics.decodedLong
+		//fenwayMetrics.DecodedLat = decodedMetrics.decodedLat
+		//fenwayMetrics.DecodedLong = decodedMetrics.decodedLong
 		fenwayMetrics.MilliSec = gpsData.MilliSec
 
 		/*/ Additional Metrics
@@ -453,6 +453,15 @@ func MetricFunc(metricChan <-chan string, outAzureChan chan<- structs.AzureChanS
 
 		//*/ outAzureChan
 		azureOut.RawData = string(metricJSON)
+
+		// ------------ AMM
+		// metricJsonChan , this channel is used to write JSON metric data to the file , done in ApexFenwayLine
+		// Added this channel to the gofunction call for this thread
+		//fmt.Println(azureOut)
+
+		metricJsonChan <- azureOut.RawData
+
+		// end  ---------------   AMM-------------------
 
 		/*/ Output Packets - Printout and Counter
 		fmt.Println(azureOut)

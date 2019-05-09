@@ -7,6 +7,7 @@ import (
 	"os"
 	"time"
 
+	"pkg/AMPQ"
 	"pkg/aggFuncs"
 	"pkg/azureFuncs"
 	"pkg/metricFuncs"
@@ -44,9 +45,6 @@ func main() {
 	config := aggFuncs.GetConfigJSON()
 
 	fmt.Println(config)
-	for _, test := range config {
-		fmt.Println(test.toString())
-	}
 
 	// Build/Read Variables
 	// Keep Alive Packet Identifier - Create a String of Hex Bytes for Comparison
@@ -70,6 +68,7 @@ func main() {
 
 	//*/  Metric Channel - Pass Validated Packet to Processing Thread
 	metricChan := make(chan string, 64)
+	metricJsonChan := make(chan string, 64)
 	//*/
 
 	/*/  UDP Output Channel - Pass Validated Data to UDP Output Thread - Disabled at this Time.
@@ -107,8 +106,17 @@ func main() {
 	}
 	//*/
 
+	//*/ Start RabbitMQ Thread
+	if config.AMPQOn == true {
+		//AMM Create Thread to write to AMQP server
+		go AMPQ.Send2AMPQ(metricJsonChan, true)
+		fmt.Println("AMQP Started   ")
+		//AMM  end AMQP
+	}
+	//*/
+
 	//*/  Start Metric Processing Threads - Process Aggregated Packets and Output Metrics (Azure and UDP are options)
-	go metricFuncs.MetricFunc(metricChan, outAzureChan, config.AzureOn)
+	go metricFuncs.MetricFunc(metricChan, metricJsonChan, outAzureChan, config.AzureOn)
 	fmt.Println("Metric Functions Started")
 	//*
 

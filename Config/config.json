@@ -1,8 +1,9 @@
 {"SessWrite":"true",
 "SessWrite2":"true",
 "SessReadIn":"true",
-"ReadFile":"NameOfFile",
-"LocalAddr":"IPAddress",
-"BeaconAddr":"BIPAddress",
-"UDPInOn":"true",
-"AzureOn":"true"}
+"ReadFile":"Sessions/KingspanSessions - 25_01_19/Session - 2019-01-25 19-34-55",
+"LocalAddr":"172.16.0.104:0",
+"BeaconAddr":"Config/NetworkInfo/NetworkInfoKingspan.txt",
+"UDPInOn":"false",
+"AzureOn":"false",
+"AMPQOn":"true"}

@@ -17,6 +17,7 @@ type ConfigStruct struct {
 	DevList       string
 	AzureOn       bool
 	UDPOutOn      bool
+	AMPQOn        bool
 }
 
 //*/
@@ -48,6 +49,7 @@ type JsonConfigStruct struct {
 	BeaconAddr string `json:"BeaconAddr"`
 	UDPInOn    string `json:"UDPInOn"`
 	AzureOn    string `json:"AzureOn"`
+	AMPQOn     string `json:"AMPQOn`
 }
 
 // Azure Input Struct Containing Raw Metrics from the Processed Packets
