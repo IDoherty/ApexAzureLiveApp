@@ -109,7 +109,7 @@ type DecodedStruct struct {
 // Temporary Struct for generation of Metrics at Fenway.
 // Data sored as Name:Value `JSON Designator for Name` which outputs "Designator":Value when converted to JSON
 type FenwayMetricsStruct struct {
-	//DevID   	uint16
+	DevID string `json:"DevID"`
 	//PktNo 		uint16
 
 	TotalDistance float32 `json:"TDist"`
@@ -340,6 +340,7 @@ func MetricFunc(metricChan <-chan string, metricJsonChan chan<- string, outAzure
 		azureOut.Unix = strconv.FormatInt(gpsData.UnixTime, 10)
 		//fmt.Println(azureOut.Unix)
 
+		fenwayMetrics.DevID = gpsData.devID
 		fenwayMetrics.MaxSpeed = decodedMetrics.MaxSpeed
 		fenwayMetrics.CurrentSpeed = decodedMetrics.CurrentSpeed
 		fenwayMetrics.TotalDistance = decodedMetrics.TotalDistance
