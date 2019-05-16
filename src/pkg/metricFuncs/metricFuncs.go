@@ -119,20 +119,21 @@ type FenwayMetricsStruct struct {
 	Impacts uint16 `json:"Impacts"`
 	Sprints uint16 `json:"Sprints"`
 
-	//DecodedLat  float32 `json:"Lat"`
-	//DecodedLong float32 `json:"Long"`
-	//GPSTime     uint32  `json:"GPSTime"`
-	//GPSDate     uint32  `json:"GPSDate"`
 	//UTCTime     string  `json:"UTC"`
 	//Unix        int64   `json:"Unix"`
 	MilliSec uint32 `json:"ms"`
 	//GpsHAcc     uint32  `json:"H-Acc"`
 }
 
-/*/ FenwayGPSStruct
+//*/ FenwayGPSStruct
 type FenwayGPSStruct struct {
-
+	DevID       string  `json:"DevID"`
+	DecodedLat  float32 `json:"Lat"`
+	DecodedLong float32 `json:"Long"`
+	//GPSTime     uint32  `json:"GPSTime"`
+	//GPSDate     uint32  `json:"GPSDate"`
 }
+
 //*/
 
 type maxMetricLatch struct {
@@ -149,7 +150,7 @@ func truncate(some float32) float32 {
 	return float32(int(some*10) / 10)
 }
 
-func MetricFunc(metricChan <-chan string, metricJsonChan chan<- string, outAzureChan chan<- structs.AzureChanStruct, AzureOn bool /*, outFileChan2 chan<- string, write2 bool, devInfo string*/) {
+func MetricFunc(metricChan <-chan string, metricJsonChan chan<- string, gpsJsonChan chan<- string, outAzureChan chan<- structs.AzureChanStruct, AzureOn bool /*, outFileChan2 chan<- string, write2 bool, devInfo string*/) {
 
 	// Set number of Fragments in each Packet
 	nrPkts := 3 //Number of individual Metric Packets in each Datagram
@@ -173,9 +174,9 @@ func MetricFunc(metricChan <-chan string, metricJsonChan chan<- string, outAzure
 
 	//var pkt_cnt uint64 = 0
 
-	// Declare Fenway Metrics Struct - now including GPS Metrics
+	// Declare Fenway Metrics Struct and GPS Position Struct
 	var fenwayMetrics FenwayMetricsStruct
-	//var fenwayGPS FenwayGPSStruct
+	var fenwayGPS FenwayGPSStruct
 	//var pktNo uint16
 
 	// Declare Azure Output Structs
@@ -346,9 +347,11 @@ func MetricFunc(metricChan <-chan string, metricJsonChan chan<- string, outAzure
 		fenwayMetrics.TotalDistance = decodedMetrics.TotalDistance
 		fenwayMetrics.Impacts = decodedMetrics.Impacts
 		fenwayMetrics.Sprints = decodedMetrics.TotalAccel
-		//fenwayMetrics.DecodedLat = decodedMetrics.decodedLat
-		//fenwayMetrics.DecodedLong = decodedMetrics.decodedLong
 		fenwayMetrics.MilliSec = gpsData.MilliSec
+
+		fenwayGPS.DevID = gpsData.devID
+		fenwayGPS.DecodedLat = decodedMetrics.decodedLat
+		fenwayGPS.DecodedLong = decodedMetrics.decodedLong
 
 		/*/ Additional Metrics
 		//fenwayMetrics.GPSDate = gpsData.gpsDate
@@ -452,6 +455,10 @@ func MetricFunc(metricChan <-chan string, metricJsonChan chan<- string, outAzure
 			fmt.Println("error:", err)
 		}
 
+		metricGPS, err := json.Marshal(fenwayGPS)
+		if err != nil {
+			fmt.Println("error:", err)
+		}
 		//*/ outAzureChan
 		azureOut.RawData = string(metricJSON)
 
@@ -461,6 +468,9 @@ func MetricFunc(metricChan <-chan string, metricJsonChan chan<- string, outAzure
 		//fmt.Println(azureOut)
 
 		metricJsonChan <- azureOut.RawData
+
+		// Added GPS Metric Channel for passing data to the Lat/Long Queue on RabbitMQ
+		gpsJsonChan <- string(metricGPS)
 
 		// end  ---------------   AMM-------------------
 

@@ -69,6 +69,7 @@ func main() {
 	//*/  Metric Channel - Pass Validated Packet to Processing Thread
 	metricChan := make(chan string, 64)
 	metricJsonChan := make(chan string, 64)
+	gpsJsonChan := make(chan string, 64)
 	//*/
 
 	/*/  UDP Output Channel - Pass Validated Data to UDP Output Thread - Disabled at this Time.
@@ -109,14 +110,14 @@ func main() {
 	//*/ Start RabbitMQ Thread
 	if config.AMPQOn == true {
 		//AMM Create Thread to write to AMQP server
-		go AMPQ.Send2AMPQ(metricJsonChan, true)
+		go AMPQ.Send2AMPQ(metricJsonChan, gpsJsonChan, true)
 		fmt.Println("AMQP Started   ")
 		//AMM  end AMQP
 	}
 	//*/
 
 	//*/  Start Metric Processing Threads - Process Aggregated Packets and Output Metrics (Azure and UDP are options)
-	go metricFuncs.MetricFunc(metricChan, metricJsonChan, outAzureChan, config.AzureOn)
+	go metricFuncs.MetricFunc(metricChan, metricJsonChan, gpsJsonChan, outAzureChan, config.AzureOn)
 	fmt.Println("Metric Functions Started")
 	//*
 
