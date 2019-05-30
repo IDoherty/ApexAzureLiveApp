@@ -79,6 +79,11 @@ func main() {
 	//*/  Azure Output Channel - Pass Message Data and Device Identifier to Azure Upload Thread
 	outAzureChan := make(chan structs.AzureChanStruct, 64)
 	//*/
+
+	//*/ Declare JSON Output Channel
+	outJsonChan := make(chan string, 64)
+	//*/
+
 	fmt.Println("Channels Set")
 
 	//*/  Start Packet Processing Threads
@@ -91,6 +96,13 @@ func main() {
 	if config.WriteOn == true {
 		go aggFuncs.WriteToFile(outFileChan, config.SessionWrite)
 		//fmt.Println("Writing Packets out to ", config.SessionWrite, time.Now())
+	}
+	//*/
+	//*/ Write Metric JSON to File
+	if config.WriteOn == true {
+		var jsonFile string
+		jsonFile = "JSON Outputs - "
+		go aggFuncs.WriteToFile(outJsonChan, jsonFile)
 	}
 	//*/
 
@@ -117,7 +129,7 @@ func main() {
 	//*/
 
 	//*/  Start Metric Processing Threads - Process Aggregated Packets and Output Metrics (Azure and UDP are options)
-	go metricFuncs.MetricFunc(metricChan, metricJsonChan, gpsJsonChan, outAzureChan, config.AzureOn)
+	go metricFuncs.MetricFunc(metricChan, metricJsonChan, outJsonChan, gpsJsonChan, outAzureChan, config.AzureOn)
 	fmt.Println("Metric Functions Started")
 	//*
 

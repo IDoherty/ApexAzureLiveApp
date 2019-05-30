@@ -150,7 +150,7 @@ func truncate(some float32) float32 {
 	return float32(int(some*10) / 10)
 }
 
-func MetricFunc(metricChan <-chan string, metricJsonChan chan<- string, gpsJsonChan chan<- string, outAzureChan chan<- structs.AzureChanStruct, AzureOn bool /*, outFileChan2 chan<- string, write2 bool, devInfo string*/) {
+func MetricFunc(metricChan <-chan string, metricJsonChan chan<- string, outJsonChan chan<- string, gpsJsonChan chan<- string, outAzureChan chan<- structs.AzureChanStruct, AzureOn bool /*, outFileChan2 chan<- string, write2 bool, devInfo string*/) {
 
 	// Set number of Fragments in each Packet
 	nrPkts := 3 //Number of individual Metric Packets in each Datagram
@@ -461,6 +461,10 @@ func MetricFunc(metricChan <-chan string, metricJsonChan chan<- string, gpsJsonC
 		}
 		//*/ outAzureChan
 		azureOut.RawData = string(metricJSON)
+
+		// outJsonChan
+		jsonMetrics := string(metricJSON)
+		outJsonChan <- jsonMetrics
 
 		// ------------ AMM
 		// metricJsonChan , this channel is used to write JSON metric data to the file , done in ApexFenwayLine

@@ -1,0 +1,1 @@
+Sessions\TestSessions/Session - ,true,Sessions/TestSessions/CutSession - ,true,Sessions\KingspanSessions - 17_01_19/Session - 2019-01-17 11-01-18,false,192.168.187.119:0,Config/NetworkInfo/NetworkInfoPortable.txt,true,Config/DevList/InternalDevList.txt,true,false

@@ -7,7 +7,7 @@ import (
 	"time"
 )
 
-func writeToFile(outFileChan <-chan string, session string) {
+func writeToFile(outJsonChan <-chan string, session string) {
 
 	newline := []byte("\n")
 	//var pktcnt int
@@ -30,7 +30,7 @@ func writeToFile(outFileChan <-chan string, session string) {
 
 	for {
 
-		packetIn := <-outFileChan
+		packetIn := <-outJsonChan
 
 		/*/ Incoming Packet Printout
 		fmt.Println(packetIn)
